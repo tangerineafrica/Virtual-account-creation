@@ -16,6 +16,7 @@ import javax.validation.Valid;
 @RestController
 @RequestMapping("/app/v1")
 @RequiredArgsConstructor
+@CrossOrigin(origins = "https://tangerine-web-form.vercel.app")
 public class UserController {
 
     private final UserServiceImpl userServiceImpl;
