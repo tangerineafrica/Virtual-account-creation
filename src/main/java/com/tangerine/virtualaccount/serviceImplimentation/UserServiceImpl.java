@@ -1,8 +1,11 @@
 package com.tangerine.virtualaccount.serviceImplimentation;
 
+import com.sendgrid.Response;
 import com.tangerine.virtualaccount.request.AltAccountRequest;
 import com.tangerine.virtualaccount.request.CreateAccountRequest;
 import com.tangerine.virtualaccount.response.CreateAccountResponse;
+import com.tangerine.virtualaccount.response.DotGoSmsResponse;
+import com.tangerine.virtualaccount.response.SendgridEmailResponse;
 import com.tangerine.virtualaccount.util.VirtualAccountUtil;
 import com.tangerine.virtualaccount.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -31,9 +34,6 @@ public class UserServiceImpl implements UserService {
 
     @Value("${squad.authorization.key}")
     private String auth_key;
-    @Value("${beneficiary.account}")
-    private String beneficiary_account;
-
 
     @Override
     public ResponseEntity<CreateAccountResponse> createAcc(CreateAccountRequest createAccountRequest) {
@@ -57,24 +57,26 @@ public class UserServiceImpl implements UserService {
 
 
             //For Dotgo SMS Begins
-            dotgoSmsService.RequestToKonnect(response.getData(), mapToAltAccountRequest(createAccountRequest), createAccountRequest);
-            System.out.println("Here are the sms details: " + response.getData() + " " + createAccountRequest.getMobile_num());
-
+            String smsResponse = dotgoSmsService.RequestToKonnect(response.getData(), mapToAltAccountRequest(createAccountRequest), createAccountRequest);
+            DotGoSmsResponse dotGoSmsResponse = new DotGoSmsResponse();
+            dotGoSmsResponse.setStatus(smsResponse);
+            response.setSmsSuccess(dotGoSmsResponse);
             //For Dotgo SMS Ends
-            System.out.println("SMS Sent");
+
 
             //For Sendgrid email Begins
-            sendGridEmailService.sendEmail(response.getData(), mapToAltAccountRequest(createAccountRequest), createAccountRequest);
-            System.out.println("Email sent");
+            Response emailResponse = sendGridEmailService.sendEmail(response.getData(), mapToAltAccountRequest(createAccountRequest), createAccountRequest);
+            SendgridEmailResponse sendgridEmailResponse = new SendgridEmailResponse();
+            sendgridEmailResponse.setStatus_code(emailResponse.getStatusCode());
+            response.setEmailSuccess(sendgridEmailResponse);
+
             return new ResponseEntity<>(response, HttpStatus.CREATED);
-           // return response;
         } catch (HttpClientErrorException e){
             e.printStackTrace();
             CreateAccountResponse errorResponse = new CreateAccountResponse();
             errorResponse.setSuccess(false);
             errorResponse.setMessage(e.getMessage());
             return new ResponseEntity<>(errorResponse, e.getStatusCode());
-            //return errorResponse;
         } catch (IOException e) {
             throw new RuntimeException(e);
 
@@ -86,9 +88,8 @@ public class UserServiceImpl implements UserService {
 
     private AltAccountRequest mapToAltAccountRequest(CreateAccountRequest createAccountRequest) {
         AltAccountRequest altAccountRequest = new AltAccountRequest();
-        String username = "Tangerine" + createAccountRequest.getProduct_type().value() + "-" + createAccountRequest.getFirst_name();
 
-        altAccountRequest.setFirst_name(username);
+        altAccountRequest.setFirst_name(createAccountRequest.getFirst_name());
         altAccountRequest.setLast_name(createAccountRequest.getLast_name());
         altAccountRequest.setMobile_num(createAccountRequest.getMobile_num());
         altAccountRequest.setEmail(createAccountRequest.getEmail());
@@ -97,7 +98,6 @@ public class UserServiceImpl implements UserService {
         altAccountRequest.setAddress(createAccountRequest.getAddress());
         altAccountRequest.setGender(createAccountRequest.getGender().value());
         altAccountRequest.setCustomer_identifier(createAccountRequest.getCustomer_identifier());
-        altAccountRequest.setBeneficiary_account(beneficiary_account);
 
         return altAccountRequest;
     }

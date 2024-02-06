@@ -22,14 +22,13 @@ public class TermiiSmsServiceImpl implements TermiiSmsService {
     @Override
     public HttpResponse<String> sendSms(AccountResponse accountResponse, AltAccountRequest altAccountRequest, CreateAccountRequest accountRequest, TermiiSmsRequest termiiSmsRequest) {
 
-        String messageReceiver = altAccountRequest.getFirst_name().substring(13);
+        String messageReceiver = altAccountRequest.getFirst_name();
 
-        //Create the product type name for the SMS
-        String smsProduct = accountRequest.getProduct_type().toString().replace("_", " ").toLowerCase();
-        String smsBody = "Dear " + messageReceiver + ",\n" + "Thanks for your interest in our" + smsProduct + "." + "\n" + "For premium payments, kindly make payment to your dedicated bank account." + "\n" + "Bank- GTB" + "\n" + "Acct Number- " + accountResponse.getVirtual_account_number();
+        String smsBody = "Dear " + messageReceiver + ",\n" + "Thanks for your interest in our insurance product." + "\n" + "For premium payments, kindly make payment to your dedicated bank account." + "\n" + "Bank- GTB" + "\n" + "Acct Number- " + accountResponse.getVirtual_account_number();
 
         //Remove first(0) from phone number and add 234 to the front
         String smsNumber = "234" + accountRequest.getMobile_num().substring(1);
+
         termiiSmsRequest.setTo(smsNumber);
         termiiSmsRequest.setFrom("Tangerine");
         termiiSmsRequest.setSms(smsBody);
