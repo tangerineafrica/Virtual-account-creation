@@ -15,7 +15,7 @@ import javax.validation.constraints.Size;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CreateAccountRequest {
-    //private ProductType product_type;
+
     @NotBlank(message = "First name is mandatory")
     private String first_name;
     @NotBlank(message = "Last name is mandatory")
