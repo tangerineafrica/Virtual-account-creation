@@ -22,15 +22,15 @@ public class SendGridEmailServiceImpl implements SendGridEmailService {
     @Value("${sendgrid.email.key}")
     private String SENDGRID_API_KEY;
     @Override
-    public String sendEmail(AccountResponse accountResponse, AltAccountRequest altAccountRequest, CreateAccountRequest accountRequest) throws IOException {
+    public Response sendEmail(AccountResponse accountResponse, AltAccountRequest altAccountRequest, CreateAccountRequest accountRequest) throws IOException {
 
-        String messageReceiver = altAccountRequest.getFirst_name().substring(13);
-        String smsProduct = accountRequest.getProduct_type().toString().replace("_", " ").toLowerCase();
+        String messageReceiver = altAccountRequest.getFirst_name();
+
         Email from = new Email("hello@tangerine.africa");
         Email to = new Email(accountRequest.getEmail(), messageReceiver);
 
         String subject = "Welcome to Tangerine Life!";
-        Content content = new Content("text/plain", "Dear " + messageReceiver + ",\n" + "Thanks for your interest in our " + smsProduct + "." + "\n" + "For premium payments, kindly make payment to your dedicated bank account." + "\n" + "Bank- GTB" + "\n" + "Acct Number- " + accountResponse.getVirtual_account_number());
+        Content content = new Content("text/plain", "Dear " + messageReceiver + ",\n" + "Thanks for your interest in our insurance product." + "\n" + "For premium payments, kindly make payment to your dedicated bank account." + "\n" + "Bank- GTB" + "\n" + "Acct Number- " + accountResponse.getVirtual_account_number());
         System.out.println("Here's the account name that goes to the email: " + messageReceiver);
         Mail mail = new Mail(from, subject, to, content);
 
@@ -45,7 +45,7 @@ public class SendGridEmailServiceImpl implements SendGridEmailService {
             Response response = sendGrid.api(request);
             System.out.println("Response status code: " + response.getStatusCode());
             System.out.println("Response body: " + response.getBody());
-            return response.getBody();
+            return response;
         } catch (IOException e) {
             e.printStackTrace();
             throw new RuntimeException(e);

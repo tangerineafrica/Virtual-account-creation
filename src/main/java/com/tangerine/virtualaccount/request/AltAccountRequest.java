@@ -20,5 +20,5 @@ public class AltAccountRequest {
     private String address;
     private String gender;
     private String customer_identifier;
-    private String beneficiary_account;
+    //private String beneficiary_account;
 }

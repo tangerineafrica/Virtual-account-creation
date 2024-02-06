@@ -22,7 +22,7 @@ public class DotgoSmsServiceImpl implements DotgoSmsService {
     private String dotgo_auth_key;
 
     @Override
-    public void RequestToKonnect(AccountResponse accountResponse, AltAccountRequest altAccountRequest, CreateAccountRequest createAccountRequest) throws JSONException {
+    public String RequestToKonnect(AccountResponse accountResponse, AltAccountRequest altAccountRequest, CreateAccountRequest createAccountRequest) throws JSONException {
 
         HttpURLConnection urlConnection;
         JSONObject json = new JSONObject();
@@ -33,19 +33,17 @@ public class DotgoSmsServiceImpl implements DotgoSmsService {
         jsonArray.put("+234" + altAccountRequest.getMobile_num());
         json.put("to", jsonArray);
 
-        String messageReceiver = altAccountRequest.getFirst_name().substring(13);
-        String smsProduct = createAccountRequest.getProduct_type().toString().replace("_", " ").toLowerCase();
-        System.out.println("message receiver: " + messageReceiver);
-        System.out.println("Here's the product type full name for dot go sms: " + altAccountRequest);
-        String smsBody = "Dear " + messageReceiver + ",\n" + "Thanks for your interest in our " + smsProduct + "." + "\n" + "For premium payments, kindly make payment to your dedicated bank account." + "\n" + "Bank- GTB" + "\n" + "Acct Number- " + accountResponse.getVirtual_account_number();
+        String messageReceiver = altAccountRequest.getFirst_name();
+        String smsBody = "Dear " + messageReceiver + ",\n" + "Thanks for your interest in our insurance product." + "\n" + "For premium payments, kindly make payment to your dedicated bank account." + "\n" + "Bank- GTB" + "\n" + "Acct Number- " + accountResponse.getVirtual_account_number();
         json.put("sender_mask", "TANGERINE");
         json.put("body", smsBody);
         String data = json.toString();
         String response = null;
 
+        String newResponse = null;
         try {
             //Connect
-            urlConnection = (HttpURLConnection)((new URL(VirtualAccountUtil.DOTGO_SMS_URL).openConnection()));
+            urlConnection = (HttpURLConnection) ((new URL(VirtualAccountUtil.DOTGO_SMS_URL).openConnection()));
             urlConnection.setDoOutput(true);
             urlConnection.setRequestProperty("Content-Type", "application/json");
             urlConnection.setRequestProperty("Authorization", dotgo_auth_key);
@@ -71,6 +69,7 @@ public class DotgoSmsServiceImpl implements DotgoSmsService {
 
             bufferedReader.close();
             response = sb.toString();
+            newResponse = response.replace("\"", "");
 
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
@@ -78,8 +77,7 @@ public class DotgoSmsServiceImpl implements DotgoSmsService {
             e.printStackTrace();
         }
 
-        System.out.println("Dotgo sms response: " + response);
-
+        return newResponse;
     }
 
 }

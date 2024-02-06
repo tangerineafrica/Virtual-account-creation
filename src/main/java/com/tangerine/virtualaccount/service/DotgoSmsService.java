@@ -7,6 +7,6 @@ import org.json.JSONException;
 
 public interface DotgoSmsService {
 
-    void RequestToKonnect(AccountResponse accountResponse, AltAccountRequest altAccountRequest, CreateAccountRequest createAccountRequest) throws JSONException;
+    String RequestToKonnect(AccountResponse accountResponse, AltAccountRequest altAccountRequest, CreateAccountRequest createAccountRequest) throws JSONException;
 
 }
