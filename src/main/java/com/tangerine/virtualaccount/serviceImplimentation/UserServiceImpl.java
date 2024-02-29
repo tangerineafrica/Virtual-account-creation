@@ -3,8 +3,10 @@ package com.tangerine.virtualaccount.serviceImplimentation;
 import com.sendgrid.Response;
 import com.tangerine.virtualaccount.request.AltAccountRequest;
 import com.tangerine.virtualaccount.request.CreateAccountRequest;
+import com.tangerine.virtualaccount.request.GetAllVirtualAccRequest;
 import com.tangerine.virtualaccount.response.CreateAccountResponse;
 import com.tangerine.virtualaccount.response.DotGoSmsResponse;
+import com.tangerine.virtualaccount.response.GetAllVirtualAccResponse;
 import com.tangerine.virtualaccount.response.SendgridEmailResponse;
 import com.tangerine.virtualaccount.util.VirtualAccountUtil;
 import com.tangerine.virtualaccount.service.UserService;
@@ -42,11 +44,11 @@ public class UserServiceImpl implements UserService {
         headers.set("Authorization", "Bearer " +auth_key);
 
         HttpEntity<AltAccountRequest> entity = new HttpEntity<>(mapToAltAccountRequest(createAccountRequest), headers);
-        System.out.println("Here's what goes for the virtual acc: " + mapToAltAccountRequest(createAccountRequest));
+
         try {
 
             CreateAccountResponse response = restTemplate.exchange(VirtualAccountUtil.SQUAD_CREATE_ACC_URL, HttpMethod.POST, entity, CreateAccountResponse.class).getBody();
-            System.out.println("Response from Squad: " + response.getData().getFirst_name());
+
 
             //For Termii SMS Begins. Also, uncomment the TermiiServiceImpl autowire on line 22
 //            TermiiSmsRequest termiiSmsRequest = new TermiiSmsRequest();
@@ -83,7 +85,27 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    @Override
+    public ResponseEntity<GetAllVirtualAccResponse> getAllVirtualAcc(GetAllVirtualAccRequest getAllVirtualAccRequest) {
 
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Authorization", "Bearer " +auth_key);
+
+        HttpEntity<GetAllVirtualAccRequest> entity = new HttpEntity<>(getAllVirtualAccRequest, headers);
+
+        try {
+            GetAllVirtualAccResponse getAllResponse = restTemplate.exchange(VirtualAccountUtil.SQUAD_GET_ALL_ACC, HttpMethod.GET, entity, GetAllVirtualAccResponse.class).getBody();
+            System.out.println("Here's the getAllResponse: " + getAllResponse);
+            return new ResponseEntity<>(getAllResponse, HttpStatus.OK);
+        } catch (HttpClientErrorException e) {
+            e.printStackTrace();
+            GetAllVirtualAccResponse getAllVirtualAccErrorResponse = new GetAllVirtualAccResponse();
+            getAllVirtualAccErrorResponse.setSuccess(false);
+            getAllVirtualAccErrorResponse.setMessage(e.getMessage());
+            return new ResponseEntity<>(getAllVirtualAccErrorResponse, e.getStatusCode());
+        }
+        //return null;
+    }
 
 
     private AltAccountRequest mapToAltAccountRequest(CreateAccountRequest createAccountRequest) {
