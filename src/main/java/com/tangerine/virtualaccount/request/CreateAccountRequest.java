@@ -1,7 +1,6 @@
 package com.tangerine.virtualaccount.request;
 
 import com.tangerine.virtualaccount.enums.Gender;
-import com.tangerine.virtualaccount.enums.ProductType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

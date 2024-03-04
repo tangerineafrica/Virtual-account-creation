@@ -31,7 +31,7 @@ public class SendGridEmailServiceImpl implements SendGridEmailService {
 
         String subject = "Welcome to Tangerine Life!";
         Content content = new Content("text/plain", "Dear " + messageReceiver + ",\n" + "Thanks for your interest in our insurance product." + "\n" + "For premium payments, kindly make payment to your dedicated bank account." + "\n" + "Bank- GTB" + "\n" + "Acct Number- " + accountResponse.getVirtual_account_number());
-        System.out.println("Here's the account name that goes to the email: " + messageReceiver);
+
         Mail mail = new Mail(from, subject, to, content);
 
         SendGrid sendGrid = new SendGrid(SENDGRID_API_KEY);
@@ -43,8 +43,7 @@ public class SendGridEmailServiceImpl implements SendGridEmailService {
             request.setBody(mail.build());
 
             Response response = sendGrid.api(request);
-            System.out.println("Response status code: " + response.getStatusCode());
-            System.out.println("Response body: " + response.getBody());
+
             return response;
         } catch (IOException e) {
             e.printStackTrace();
