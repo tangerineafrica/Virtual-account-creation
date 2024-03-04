@@ -9,5 +9,8 @@ import org.springframework.http.ResponseEntity;
 
 public interface UserService {
     ResponseEntity<CreateAccountResponse> createAcc (CreateAccountRequest createAccountRequest);
+    //ResponseEntity<GetAllVirtualAccResponse> getAllVirtualAcc(String startDate, String endDate, int perPage, int page);
     ResponseEntity<GetAllVirtualAccResponse> getAllVirtualAcc(GetAllVirtualAccRequest getAllVirtualAccRequest);
+
+    //ResponseEntity<byte[]> generateExcelforgetAllVirtualAcc()
 }

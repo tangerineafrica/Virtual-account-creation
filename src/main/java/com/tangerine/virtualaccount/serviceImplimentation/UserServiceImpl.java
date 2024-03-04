@@ -86,16 +86,25 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    //public ResponseEntity<GetAllVirtualAccResponse> getAllVirtualAcc(String startDate, String endDate, int perPage, int page) {
     public ResponseEntity<GetAllVirtualAccResponse> getAllVirtualAcc(GetAllVirtualAccRequest getAllVirtualAccRequest) {
 
         HttpHeaders headers = new HttpHeaders();
         headers.set("Authorization", "Bearer " +auth_key);
+//        GetAllVirtualAccRequest getAllVirtualAccRequest = new GetAllVirtualAccRequest();
+//        getAllVirtualAccRequest.setEndDate(endDate);
+//        getAllVirtualAccRequest.setStartDate(startDate);
+//        getAllVirtualAccRequest.setPage(page);
+//        getAllVirtualAccRequest.setPerPage(perPage);
 
         HttpEntity<GetAllVirtualAccRequest> entity = new HttpEntity<>(getAllVirtualAccRequest, headers);
 
+        System.out.println("Here's the getAllVirtualAccRequest " + getAllVirtualAccRequest);
+        String mainUrl = VirtualAccountUtil.SQUAD_GET_ALL_ACC + "?perPage=" + getAllVirtualAccRequest.getPerPage() + "&startDate=" + getAllVirtualAccRequest.getStartDate() + "&endDate=" + getAllVirtualAccRequest.getEndDate();
+        System.out.println("Here's the url " + mainUrl);
         try {
-            GetAllVirtualAccResponse getAllResponse = restTemplate.exchange(VirtualAccountUtil.SQUAD_GET_ALL_ACC, HttpMethod.GET, entity, GetAllVirtualAccResponse.class).getBody();
-            System.out.println("Here's the getAllResponse: " + getAllResponse);
+            GetAllVirtualAccResponse getAllResponse = restTemplate.exchange(mainUrl, HttpMethod.GET, entity, GetAllVirtualAccResponse.class).getBody();
+            //System.out.println("Here's the url: " + VirtualAccountUtil.SQUAD_GET_ALL_ACC);
             return new ResponseEntity<>(getAllResponse, HttpStatus.OK);
         } catch (HttpClientErrorException e) {
             e.printStackTrace();
@@ -120,7 +129,7 @@ public class UserServiceImpl implements UserService {
         altAccountRequest.setAddress(createAccountRequest.getAddress());
         altAccountRequest.setGender(createAccountRequest.getGender().value());
         altAccountRequest.setCustomer_identifier(createAccountRequest.getCustomer_identifier());
-
+        altAccountRequest.setBeneficiary_account("0138427972");
         return altAccountRequest;
     }
 

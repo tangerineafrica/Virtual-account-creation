@@ -28,6 +28,11 @@ public class UserController {
             return userServiceImpl.createAcc(createAccountRequest);
     }
 
+//    @GetMapping("/get-all-acc")
+//    public ResponseEntity<GetAllVirtualAccResponse> getAllVirtualAcc (@RequestParam String startDate, String endDate, int perPage, int page ) {
+//        return userServiceImpl.getAllVirtualAcc(startDate, endDate, perPage, page);
+//    }
+
     @GetMapping("/get-all-acc")
     public ResponseEntity<GetAllVirtualAccResponse> getAllVirtualAcc (GetAllVirtualAccRequest getAllVirtualAccRequest) {
         return userServiceImpl.getAllVirtualAcc(getAllVirtualAccRequest);
