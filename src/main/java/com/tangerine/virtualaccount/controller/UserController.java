@@ -3,7 +3,9 @@ package com.tangerine.virtualaccount.controller;
 
 import com.tangerine.virtualaccount.request.AltAccountRequest;
 import com.tangerine.virtualaccount.request.CreateAccountRequest;
+import com.tangerine.virtualaccount.request.GetAllVirtualAccRequest;
 import com.tangerine.virtualaccount.response.CreateAccountResponse;
+import com.tangerine.virtualaccount.response.GetAllVirtualAccResponse;
 import com.tangerine.virtualaccount.serviceImplimentation.UserServiceImpl;
 import com.tangerine.virtualaccount.util.ErrorUtils;
 import lombok.RequiredArgsConstructor;
@@ -24,5 +26,10 @@ public class UserController {
     @PostMapping("/create-acc")
     public ResponseEntity<CreateAccountResponse> createVirtualAcc (@Valid @RequestBody CreateAccountRequest createAccountRequest) {
             return userServiceImpl.createAcc(createAccountRequest);
+    }
+
+    @GetMapping("/get-all-acc")
+    public ResponseEntity<GetAllVirtualAccResponse> getAllVirtualAcc (GetAllVirtualAccRequest getAllVirtualAccRequest) {
+        return userServiceImpl.getAllVirtualAcc(getAllVirtualAccRequest);
     }
 }
