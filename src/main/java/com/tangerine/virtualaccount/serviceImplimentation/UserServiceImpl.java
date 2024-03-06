@@ -86,16 +86,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    //public ResponseEntity<GetAllVirtualAccResponse> getAllVirtualAcc(String startDate, String endDate, int perPage, int page) {
-    public ResponseEntity<GetAllVirtualAccResponse> getAllVirtualAcc(GetAllVirtualAccRequest getAllVirtualAccRequest) {
+    public ResponseEntity<GetAllVirtualAccResponse> getAllVirtualAccByDate(GetAllVirtualAccRequest getAllVirtualAccRequest) {
 
         HttpHeaders headers = new HttpHeaders();
         headers.set("Authorization", "Bearer " +auth_key);
-//        GetAllVirtualAccRequest getAllVirtualAccRequest = new GetAllVirtualAccRequest();
-//        getAllVirtualAccRequest.setEndDate(endDate);
-//        getAllVirtualAccRequest.setStartDate(startDate);
-//        getAllVirtualAccRequest.setPage(page);
-//        getAllVirtualAccRequest.setPerPage(perPage);
 
         HttpEntity<GetAllVirtualAccRequest> entity = new HttpEntity<>(getAllVirtualAccRequest, headers);
 
@@ -104,7 +98,6 @@ public class UserServiceImpl implements UserService {
         System.out.println("Here's the url " + mainUrl);
         try {
             GetAllVirtualAccResponse getAllResponse = restTemplate.exchange(mainUrl, HttpMethod.GET, entity, GetAllVirtualAccResponse.class).getBody();
-            //System.out.println("Here's the url: " + VirtualAccountUtil.SQUAD_GET_ALL_ACC);
             return new ResponseEntity<>(getAllResponse, HttpStatus.OK);
         } catch (HttpClientErrorException e) {
             e.printStackTrace();
@@ -113,7 +106,32 @@ public class UserServiceImpl implements UserService {
             getAllVirtualAccErrorResponse.setMessage(e.getMessage());
             return new ResponseEntity<>(getAllVirtualAccErrorResponse, e.getStatusCode());
         }
-        //return null;
+
+    }
+
+
+    @Override
+    public ResponseEntity<GetAllVirtualAccResponse> getAllVirtualAcc(GetAllVirtualAccRequest getAllVirtualAccRequest) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Authorization", "Bearer " +auth_key);
+
+        HttpEntity<GetAllVirtualAccRequest> entity = new HttpEntity<>(getAllVirtualAccRequest, headers);
+
+        System.out.println("Here's the getAllVirtualAccRequest " + getAllVirtualAccRequest);
+
+        try {
+            GetAllVirtualAccResponse getAllResponse = restTemplate.exchange(VirtualAccountUtil.SQUAD_GET_ALL_ACC, HttpMethod.GET, entity, GetAllVirtualAccResponse.class).getBody();
+            System.out.println("Here's the url: " + VirtualAccountUtil.SQUAD_GET_ALL_ACC);
+            assert getAllResponse != null;
+
+            return new ResponseEntity<>(getAllResponse, HttpStatus.OK);
+        } catch (HttpClientErrorException e) {
+            e.printStackTrace();
+            GetAllVirtualAccResponse getAllVirtualAccErrorResponse = new GetAllVirtualAccResponse();
+            getAllVirtualAccErrorResponse.setSuccess(false);
+            getAllVirtualAccErrorResponse.setMessage(e.getMessage());
+            return new ResponseEntity<>(getAllVirtualAccErrorResponse, e.getStatusCode());
+        }
     }
 
 

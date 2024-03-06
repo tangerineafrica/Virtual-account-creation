@@ -1,15 +1,12 @@
 package com.tangerine.virtualaccount.controller;
 
 
-import com.tangerine.virtualaccount.request.AltAccountRequest;
 import com.tangerine.virtualaccount.request.CreateAccountRequest;
 import com.tangerine.virtualaccount.request.GetAllVirtualAccRequest;
 import com.tangerine.virtualaccount.response.CreateAccountResponse;
 import com.tangerine.virtualaccount.response.GetAllVirtualAccResponse;
 import com.tangerine.virtualaccount.serviceImplimentation.UserServiceImpl;
-import com.tangerine.virtualaccount.util.ErrorUtils;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,10 +25,10 @@ public class UserController {
             return userServiceImpl.createAcc(createAccountRequest);
     }
 
-//    @GetMapping("/get-all-acc")
-//    public ResponseEntity<GetAllVirtualAccResponse> getAllVirtualAcc (@RequestParam String startDate, String endDate, int perPage, int page ) {
-//        return userServiceImpl.getAllVirtualAcc(startDate, endDate, perPage, page);
-//    }
+    @GetMapping("/get-acc-by-date")
+    public ResponseEntity<GetAllVirtualAccResponse> getAllVirtualAccByDate(GetAllVirtualAccRequest getAllVirtualAccRequest) {
+        return userServiceImpl.getAllVirtualAccByDate(getAllVirtualAccRequest);
+    }
 
     @GetMapping("/get-all-acc")
     public ResponseEntity<GetAllVirtualAccResponse> getAllVirtualAcc (GetAllVirtualAccRequest getAllVirtualAccRequest) {
