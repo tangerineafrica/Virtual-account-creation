@@ -93,9 +93,8 @@ public class UserServiceImpl implements UserService {
 
         HttpEntity<GetAllVirtualAccRequest> entity = new HttpEntity<>(getAllVirtualAccRequest, headers);
 
-        System.out.println("Here's the getAllVirtualAccRequest " + getAllVirtualAccRequest);
         String mainUrl = VirtualAccountUtil.SQUAD_GET_ALL_ACC + "?perPage=" + getAllVirtualAccRequest.getPerPage() + "&startDate=" + getAllVirtualAccRequest.getStartDate() + "&endDate=" + getAllVirtualAccRequest.getEndDate();
-        System.out.println("Here's the url " + mainUrl);
+
         try {
             GetAllVirtualAccResponse getAllResponse = restTemplate.exchange(mainUrl, HttpMethod.GET, entity, GetAllVirtualAccResponse.class).getBody();
             return new ResponseEntity<>(getAllResponse, HttpStatus.OK);
@@ -117,10 +116,10 @@ public class UserServiceImpl implements UserService {
 
         HttpEntity<GetAllVirtualAccRequest> entity = new HttpEntity<>(getAllVirtualAccRequest, headers);
 
-        System.out.println("Here's the getAllVirtualAccRequest " + getAllVirtualAccRequest);
+        String mainUrl = VirtualAccountUtil.SQUAD_GET_ALL_ACC + "?perPage=" + getAllVirtualAccRequest.getPerPage();
 
         try {
-            GetAllVirtualAccResponse getAllResponse = restTemplate.exchange(VirtualAccountUtil.SQUAD_GET_ALL_ACC, HttpMethod.GET, entity, GetAllVirtualAccResponse.class).getBody();
+            GetAllVirtualAccResponse getAllResponse = restTemplate.exchange(mainUrl, HttpMethod.GET, entity, GetAllVirtualAccResponse.class).getBody();
             System.out.println("Here's the url: " + VirtualAccountUtil.SQUAD_GET_ALL_ACC);
             assert getAllResponse != null;
 
