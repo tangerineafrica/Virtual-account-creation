@@ -14,4 +14,7 @@ public interface UserService {
 
     ResponseEntity<GetAllVirtualAccResponse> getAllVirtualAcc(GetAllVirtualAccRequest getAllVirtualAccRequest);
 
+    ResponseEntity<?> downloadAllVirtualAcc(GetAllVirtualAccRequest getAllVirtualAccRequest);
+
+    ResponseEntity<?> downloadAllVirtualAccByDate(GetAllVirtualAccRequest getAllVirtualAccRequest);
 }
