@@ -34,4 +34,14 @@ public class UserController {
     public ResponseEntity<GetAllVirtualAccResponse> getAllVirtualAcc (GetAllVirtualAccRequest getAllVirtualAccRequest) {
         return userServiceImpl.getAllVirtualAcc(getAllVirtualAccRequest);
     }
+
+    @GetMapping("/download-all-acc")
+    public ResponseEntity<?> downloadAllVirtualAcc (GetAllVirtualAccRequest getAllVirtualAccRequest) {
+        return userServiceImpl.downloadAllVirtualAcc(getAllVirtualAccRequest);
+    }
+
+    @GetMapping("/download-acc-by-date")
+    public ResponseEntity<?> downloadAllVirtualAccByDate (GetAllVirtualAccRequest getAllVirtualAccRequest) {
+        return userServiceImpl.downloadAllVirtualAccByDate(getAllVirtualAccRequest);
+    }
 }
