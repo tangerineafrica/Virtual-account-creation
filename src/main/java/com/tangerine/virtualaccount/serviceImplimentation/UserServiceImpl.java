@@ -95,7 +95,7 @@ public class UserServiceImpl implements UserService {
         HttpHeaders headers = new HttpHeaders();
         headers.set("Authorization", "Bearer " +auth_key);
 
-        getAllVirtualAccRequest.setPerPage(500);
+        //getAllVirtualAccRequest.setPerPage(500);
         HttpEntity<GetAllVirtualAccRequest> entity = new HttpEntity<>(getAllVirtualAccRequest, headers);
 
         String mainUrl = VirtualAccountUtil.SQUAD_GET_ALL_ACC + "?perPage=" + getAllVirtualAccRequest.getPerPage() + "&startDate=" + getAllVirtualAccRequest.getStartDate() + "&endDate=" + getAllVirtualAccRequest.getEndDate();
@@ -119,10 +119,10 @@ public class UserServiceImpl implements UserService {
         HttpHeaders headers = new HttpHeaders();
         headers.set("Authorization", "Bearer " +auth_key);
 
-        getAllVirtualAccRequest.setPerPage(500);
+        //getAllVirtualAccRequest.setPerPage(500);
         HttpEntity<GetAllVirtualAccRequest> entity = new HttpEntity<>(getAllVirtualAccRequest, headers);
 
-        String mainUrl = VirtualAccountUtil.SQUAD_GET_ALL_ACC + "?perPage=" + getAllVirtualAccRequest.getPerPage();
+        String mainUrl = VirtualAccountUtil.SQUAD_GET_ALL_ACC + "?perPage=" + getAllVirtualAccRequest.getPerPage() + "&page=" + getAllVirtualAccRequest.getPage();
 
         try {
             GetAllVirtualAccResponse getAllResponse = restTemplate.exchange(mainUrl, HttpMethod.GET, entity, GetAllVirtualAccResponse.class).getBody();
@@ -143,10 +143,10 @@ public class UserServiceImpl implements UserService {
         HttpHeaders headers = new HttpHeaders();
         headers.set("Authorization", "Bearer " +auth_key);
 
-        getAllVirtualAccRequest.setPerPage(500);
+        //getAllVirtualAccRequest.setPerPage(500);
         HttpEntity<GetAllVirtualAccRequest> entity = new HttpEntity<>(getAllVirtualAccRequest, headers);
 
-        String mainUrl = VirtualAccountUtil.SQUAD_GET_ALL_ACC + "?perPage=" + getAllVirtualAccRequest.getPerPage();
+        String mainUrl = VirtualAccountUtil.SQUAD_GET_ALL_ACC + "?perPage=" + getAllVirtualAccRequest.getPerPage() + "&page=" + getAllVirtualAccRequest.getPage();
         try {
             //Fetch all Virtual Account details from Squad
             GetAllVirtualAccResponse getAllResponse = restTemplate.exchange(mainUrl, HttpMethod.GET, entity, GetAllVirtualAccResponse.class).getBody();
@@ -154,7 +154,7 @@ public class UserServiceImpl implements UserService {
 
             // Create a list to add virtual accounts to
             List<AllVirtualAccResponse> accResponseList = new ArrayList<>();
-            List<AllVirtualAccResponse> mainAccResponseList = new ArrayList<>();
+            //List<AllVirtualAccResponse> mainAccResponseList = new ArrayList<>();
 
             // Loop through response from Squad and add virtual accounts to the above list
             for (AllVirtualAccResponse data : getAllResponse.getData()) {
@@ -162,9 +162,9 @@ public class UserServiceImpl implements UserService {
             }
 
             // Loop through list to remove test accounts
-            for (int i = 0; i < accResponseList.size() - 16; i++) {
-                mainAccResponseList.add(accResponseList.get(i));
-            }
+//            for (int i = 0; i < accResponseList.size() - 16; i++) {
+//                mainAccResponseList.add(accResponseList.get(i));
+//            }
 
             // Create an Excel workbook and sheet
             Workbook workbook = new XSSFWorkbook();
@@ -178,8 +178,8 @@ public class UserServiceImpl implements UserService {
             headerRow.createCell(3).setCellValue("VIRTUAL ACCOUNT NUMBER");
             headerRow.createCell(4).setCellValue("DATE CREATED");
 
-            // for (AllVirtualAccResponse mapResponse : accResponseList) {
-            for (AllVirtualAccResponse mapResponse : mainAccResponseList) {
+             for (AllVirtualAccResponse mapResponse : accResponseList) {
+            //for (AllVirtualAccResponse mapResponse : mainAccResponseList) {
                 Row dataRow = sheet.createRow(rowNumber++);
                 dataRow.createCell(0).setCellValue(mapResponse.getFirst_name());
                 dataRow.createCell(1).setCellValue(mapResponse.getLast_name());
@@ -214,10 +214,10 @@ public class UserServiceImpl implements UserService {
         HttpHeaders headers = new HttpHeaders();
         headers.set("Authorization", "Bearer " + auth_key);
 
-        getAllVirtualAccRequest.setPerPage(500);
+       // getAllVirtualAccRequest.setPerPage(500);
         HttpEntity<GetAllVirtualAccRequest> entity = new HttpEntity<>(getAllVirtualAccRequest, headers);
 
-        String mainUrl = VirtualAccountUtil.SQUAD_GET_ALL_ACC + "?perPage=" + getAllVirtualAccRequest.getPerPage() + "&startDate=" + getAllVirtualAccRequest.getStartDate() + "&endDate=" + getAllVirtualAccRequest.getEndDate();
+        String mainUrl = VirtualAccountUtil.SQUAD_GET_ALL_ACC + "?perPage=" + getAllVirtualAccRequest.getPerPage() + "&page=" + getAllVirtualAccRequest.getPage() + "&startDate=" + getAllVirtualAccRequest.getStartDate() + "&endDate=" + getAllVirtualAccRequest.getEndDate();
 
         try {
             GetAllVirtualAccResponse getAllResponse = restTemplate.exchange(mainUrl, HttpMethod.GET, entity, GetAllVirtualAccResponse.class).getBody();
