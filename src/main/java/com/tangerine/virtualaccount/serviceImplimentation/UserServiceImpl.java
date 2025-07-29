@@ -71,10 +71,11 @@ public class UserServiceImpl implements UserService {
 
 
             //For Sendgrid email Begins
-            Response emailResponse = sendGridEmailService.sendEmail(response.getData(), mapToAltAccountRequest(createAccountRequest), createAccountRequest);
-            SendgridEmailResponse sendgridEmailResponse = new SendgridEmailResponse();
-            sendgridEmailResponse.setStatus_code(emailResponse.getStatusCode());
-            response.setEmailSuccess(sendgridEmailResponse);
+//            Response emailResponse = sendGridEmailService.sendEmail(response.getData(), mapToAltAccountRequest(createAccountRequest), createAccountRequest);
+//            SendgridEmailResponse sendgridEmailResponse = new SendgridEmailResponse();
+//            sendgridEmailResponse.setStatus_code(emailResponse.getStatusCode());
+//            response.setEmailSuccess(sendgridEmailResponse);
+
 
             return new ResponseEntity<>(response, HttpStatus.CREATED);
         } catch (HttpClientErrorException e){
@@ -83,10 +84,11 @@ public class UserServiceImpl implements UserService {
             errorResponse.setSuccess(false);
             errorResponse.setMessage(e.getMessage());
             return new ResponseEntity<>(errorResponse, e.getStatusCode());
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-
         }
+//        catch (IOException e) {
+//            throw new RuntimeException(e);
+//
+//        }
     }
 
     @Override
