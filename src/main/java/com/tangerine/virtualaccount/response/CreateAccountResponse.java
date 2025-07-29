@@ -11,6 +11,6 @@ public class CreateAccountResponse {
     private String message;
     private AccountResponse data;
     private DotGoSmsResponse smsSuccess;
-    private SendgridEmailResponse emailSuccess;
+    //private SendgridEmailResponse emailSuccess;
 
 }
